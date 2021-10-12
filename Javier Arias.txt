@@ -1,0 +1,7 @@
+Pedro Javier Arias Lasso
+Los comando que utilice fur:
+
+git clone para clonar el repositorio
+git add para alistar el commit
+git commit para comitiar
+git push para subir al repositorio
