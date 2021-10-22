@@ -23,7 +23,7 @@ public class OperacionesAritmeticasTest {
 	 */
 	private final static Logger log = Logger.getLogger(OperacionesAritmeticasTest.class);
 	
-	@BeforeTest
+	//@BeforeTest
 	public void inicializar() {
 		BasicConfigurator.configure(); // Inicializa el logger con una configuracion basica
 		log.info(":::::::::::::::::::::::::::: INICIAN PRUEBAS UNITARIAS :::::::::::::::::::::::::::: ");
@@ -38,7 +38,7 @@ public class OperacionesAritmeticasTest {
 	 *
 	 */
 //@Test(enabled = true) prueba inactiva
-	@Test 
+	//@Test 
 	public void validarResultadoSumaExitoso() {
 		log.info("Inicia ejecucion del metodo validarResultadoSumaExitoso()");
 		
@@ -63,7 +63,7 @@ public class OperacionesAritmeticasTest {
 	 * @author DIEGO FERNANDO
 	 *
 	 */
-	@Test
+	//@Test
 	public void validarResultadoSumaFallido() {
 		log.info("Inicia ejecucion del metodo validarResultadoSumaFallido()");
 		
@@ -80,13 +80,14 @@ public class OperacionesAritmeticasTest {
 				throw new Exception("La suma ha fallado en el calculo");
 			}
 		} catch (Exception e) {
+			log.info(e.getMessage());
 			Assert.assertEquals(e.getMessage(), "La suma ha fallado en el calculo");
 		}
 		
 		log.info("Finaliza la ejecucion del metodo validarResultadoSumaFallido()");
 	}
 	
-	@AfterTest
+	//@AfterTest
 	public void finalizaPruebasUnitarias() {
 		log.info(":::::::::::::::::::::::::::: FINALIZAN PRUEBAS UNITARIAS :::::::::::::::::::::::::::: ");
 	}
