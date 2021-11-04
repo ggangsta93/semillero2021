@@ -119,10 +119,11 @@ public class Comic implements Serializable {
 	 * @param estadoEnum
 	 * @param cantidad
 	 */
-	public Comic(String nombre, String editorial, TematicaEnum tematicaEnum, String coleccion,
+	public Comic(Long id, String nombre, String editorial, TematicaEnum tematicaEnum, String coleccion,
 			Integer numeroPaginas, BigDecimal precio, String autores, Boolean color, LocalDate fechaVenta,
 			EstadoEnum estadoEnum, Long cantidad) {
 		super();
+		this.id=id;
 		this.nombre = nombre;
 		this.editorial = editorial;
 		this.tematicaEnum = tematicaEnum;

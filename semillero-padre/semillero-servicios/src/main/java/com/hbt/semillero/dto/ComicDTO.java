@@ -13,15 +13,25 @@ import com.hbt.semillero.enums.TematicaEnum;
  * 
  * @author Pedro Javier Arias
  */
-public class ComicDTO implements Serializable {
+public class ComicDTO extends ResultadoDTO implements Serializable {
 
 	
 	private static final long serialVersionUID = 1L;
+	
+	/**
+	 * Indicador de resultado
+	 */
+	private boolean exitoso = false;
+	
+	/**
+	 * Mensaje de ejecucion
+	 */
+	private String mensajeEjecucion;
 
 	/**
 	 * Atributo que determina el Identificador unico del comic
 	 */
-	private String id;
+	private Long id;
 	/**
 	 * Atributo que determina el Nombre o titulo del comic o revista grafica
 	 */
@@ -89,11 +99,11 @@ public class ComicDTO implements Serializable {
 	 * @param estadoEnum
 	 * @param cantidad
 	 */
-	public ComicDTO(String nombre, String editorial, TematicaEnum tematicaEnum, String coleccion,
+	public ComicDTO(Long id,String nombre, String editorial, TematicaEnum tematicaEnum, String coleccion,
 			Integer numeroPaginas, BigDecimal precio, String autores, Boolean color, LocalDate fechaVenta,
 			EstadoEnum estadoEnum, Long cantidad) {
 		super();
-		this.id = id;
+		this.id=id;
 		this.nombre = nombre;
 		this.editorial = editorial;
 		this.tematicaEnum = tematicaEnum;
@@ -112,7 +122,7 @@ public class ComicDTO implements Serializable {
 	 * 
 	 * @return El id asociado a la clase
 	 */
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
@@ -121,7 +131,7 @@ public class ComicDTO implements Serializable {
 	 * 
 	 * @param id El nuevo id a modificar.
 	 */
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

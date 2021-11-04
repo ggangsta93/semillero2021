@@ -11,10 +11,6 @@
 	<version>1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Semillero padre HBT</name>
-	<modules>
-		<module>semillero-servicios</module>
-		<module>semillero-web</module>
-		<module>semillero-ear</module>
-  </modules>
+	<modules></modules>
 </project>
 	

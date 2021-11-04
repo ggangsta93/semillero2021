@@ -31,7 +31,7 @@ public class CreacionComicTest {
 	/**
 	 * Constante que contendra el log de la clase CreacionComicTest
 	 */
-	private final static Logger log = Logger.getLogger(OperacionesAritmeticasTest.class);
+	private final static Logger log = Logger.getLogger(CreacionComicTest.class);
 	
 	@BeforeTest
 	public void inicializar() {
