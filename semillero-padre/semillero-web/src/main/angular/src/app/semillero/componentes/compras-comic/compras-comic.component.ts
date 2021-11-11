@@ -1,3 +1,4 @@
+import { ThrowStmt } from "@angular/compiler";
 import { Component, Input, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -10,10 +11,12 @@ import { GestionarComicService } from "../service/gestionar-comic.service";
 export class ComprasComicComponent implements OnInit {
   @Input() idComic: number;
 
+  public resultado: String;
   public gestionarForm: FormGroup;
   public submitted: boolean;
   private id: number;
   private cantidad: number;
+  private exitoso: boolean;
 
   constructor(
     private fb: FormBuilder,
@@ -52,13 +55,11 @@ export class ComprasComicComponent implements OnInit {
       .comprarComic(this.id, this.cantidad)
       .subscribe((data) => {
         if (data.exitoso) {
-          console.log(
-            "if-EL MENSAJE DE EJECUCION ES: " + data.mensajeEjecucion
-          );
+          this.resultado = data.mensajeEjecucion;
+          this.exitoso = data.exitoso;
         } else {
-          console.log(
-            "else-EL MENSAJE DE EJECUCION ES: " + data.mensajeEjecucion
-          );
+          this.resultado = data.mensajeEjecucion;
+          this.exitoso = data.exitoso;
         }
         this.limpiarDatosComic();
       });

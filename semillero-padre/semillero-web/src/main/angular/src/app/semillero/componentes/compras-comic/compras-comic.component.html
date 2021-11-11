@@ -38,4 +38,20 @@
     La compra se realizan con exito, si ingresas el idComic y la cantidad a
     comprar.
   </p>
+
+  <div
+    *ngIf="resultado != null && exitoso == true"
+    class="alert alert-primary"
+    role="alert"
+  >
+    {{ this.resultado }}
+  </div>
+
+  <div
+    *ngIf="resultado != null && exitoso == false"
+    class="alert alert-danger"
+    role="alert"
+  >
+    {{ this.resultado }}
+  </div>
 </div>
