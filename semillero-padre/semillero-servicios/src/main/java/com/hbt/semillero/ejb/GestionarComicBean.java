@@ -3,8 +3,9 @@
  */
 package com.hbt.semillero.ejb;
 
+import java.io.Console;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -24,6 +25,7 @@ import com.hbt.semillero.dto.ConsultaComicTamanioNombreDTO;
 import com.hbt.semillero.dto.ConsultaNombrePrecioComicDTO;
 import com.hbt.semillero.entidad.Comic;
 import com.hbt.semillero.enums.EstadoEnum;
+import com.hbt.semillero.exception.excepcionMaximoCaracteres;
 
 @Stateless // Está más orientado al manejo de servicios
 @TransactionManagement(TransactionManagementType.CONTAINER) // El container lo hace de forma automatica, el bean se
@@ -37,9 +39,12 @@ public class GestionarComicBean implements IGestionarComicLocal {
 	private EntityManager em;
 
 	/**
-	 * @see com.hbt.semillero.ejb.IGestionarComicLocal#consultarNombrePrecioComic(java.lang.Long)
+	 * Metodo encargado de consultar nombre y precio de un comic con el idComic
+	 * 
+	 * @author Pedro Javier Arias
+	 * @param comic
+	 * @return
 	 */
-
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	@Override
 	public ConsultaNombrePrecioComicDTO consultarNombrePrecioComic(Long idComic) {
@@ -62,43 +67,60 @@ public class GestionarComicBean implements IGestionarComicLocal {
 
 		return consultaNombrePrecioDTO;
 	}
-	
+
+	/**
+	 * Metodo encargado de devolver los nombres de los comics que cumplen y no
+	 * cumplen con la restricción de longitud solicitada
+	 * 
+	 * @author Pedro Javier Arias
+	 * @param comic
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	@Override
-	public ConsultaComicTamanioNombreDTO  consultarComicTamanioNombre(Short lengthComic) {
+	public ConsultaComicTamanioNombreDTO consultarComicTamanioNombre(Short lengthComic) {
 		String consulta = "SELECT c.nombre FROM Comic c";
-		
+
 		ConsultaComicTamanioNombreDTO consultaComicTamanioNombreDTO = new ConsultaComicTamanioNombreDTO();
 		ArrayList<String> superan = new ArrayList<String>();
 		ArrayList<String> noSuperan = new ArrayList<String>();
 
-		
 		try {
-			Query consultaNativa = em.createQuery(consulta);			
-			List<Comic> comics = consultaNativa.getResultList();
-						
-			for (Comic comic : comics) {
-				if(comic.getNombre().length() >= lengthComic) {
-					superan.add(comic.getNombre());
-				}else {
-					noSuperan.add(comic.getNombre());
-				}
-			}			
-			consultaComicTamanioNombreDTO.setSi(superan);
-			consultaComicTamanioNombreDTO.setNo(noSuperan);
+			Query consultaNativa = em.createQuery(consulta);
+			List<String> comics = consultaNativa.getResultList();
+
+			if (lengthComic > 100)
+				throw new excepcionMaximoCaracteres("La longitud permitida es de 100 caracteres.");
+
+			for (String comic : comics) {
+				if (comic.length() >= lengthComic)
+					superan.add(comic);
+				else
+					noSuperan.add(comic);
+			}
+			consultaComicTamanioNombreDTO.setComicsSuperanTamanio(superan);
+			consultaComicTamanioNombreDTO.setComicsNoSuperanTamanio(noSuperan);
 			consultaComicTamanioNombreDTO.setExitoso(true);
 			consultaComicTamanioNombreDTO.setMensajeEjecucion("Se ejecuto exitosamente la consulta");
+		} catch (excepcionMaximoCaracteres e) {
+			consultaComicTamanioNombreDTO.setExitoso(false);
+			consultaComicTamanioNombreDTO.setMensajeEjecucion(e.getMessage());
 		} catch (Exception e) {
 			consultaComicTamanioNombreDTO.setExitoso(false);
-			consultaComicTamanioNombreDTO.setMensajeEjecucion("Se ha presentado un error tecnico al consultar el comic");
+			consultaComicTamanioNombreDTO
+					.setMensajeEjecucion("Se ha presentado un error tecnico al consultar el comic");
 		}
 
-		return consultaComicTamanioNombreDTO;		
+		return consultaComicTamanioNombreDTO;
 	}
 
 	/**
-	 * @throws Exception
-	 * @see com.hbt.semillero.ejb.IGestionarComicLocal#crearComic(com.hbt.semillero.dto.ComicDTO)
+	 * Metodo encargado de crear un comic
+	 * 
+	 * @author Pedro Javier Arias
+	 * @param comic
+	 * @return
 	 */
 	@Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
@@ -113,12 +135,15 @@ public class GestionarComicBean implements IGestionarComicLocal {
 		comicDTOResultado = convertirComicToComicDTO(comic);
 		comicDTOResultado.setExitoso(true);
 		comicDTOResultado.setMensajeEjecucion("El comic se ha creado exitosamente.");
-
 		return comicDTOResultado;
 	}
 
 	/**
-	 * @see com.hbt.semillero.ejb.IGestionarComicLocal#actualizarNombreComic(java.lang.Long)
+	 * Metodo encargado de actualizar el nombre de un comic con el idComic
+	 * 
+	 * @author Pedro Javier Arias
+	 * @param comic
+	 * @return
 	 */
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	@Override
@@ -126,33 +151,35 @@ public class GestionarComicBean implements IGestionarComicLocal {
 		String actualizarNombreComic = "UPDATE Comic c SET c.nombre = :nombre WHERE c.id =:idComic";
 		Query queryActualizarComic = em.createQuery(actualizarNombreComic);
 		queryActualizarComic.setParameter("nombre", nombre);
-		queryActualizarComic.setParameter("idComic", idComic);	
+		queryActualizarComic.setParameter("idComic", idComic);
 		queryActualizarComic.executeUpdate();
-		
+
 		ComicDTO comicDTOResultado = new ComicDTO();
 		try {
 			comicDTOResultado = convertirComicToComicDTO(consultarComic(idComic));
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return comicDTOResultado;
 	}
-	
-	
+
 	/**
-	 * @see com.hbt.semillero.ejb.IGestionarComicLocal#actualizarEstadoComics(java.lang.Long)
+	 * Metodo encargado de actualizar el estado de un comic con el idComic
+	 * 
+	 * @author Pedro Javier Arias
+	 * @param comic
+	 * @return
 	 */
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	@Override
-	public ComicDTO actualizarEstadoComic(Long idComic, EstadoEnum estado) {	
+	public ComicDTO actualizarEstadoComic(Long idComic, EstadoEnum estado) {
 		String actualizarNombreComic = "UPDATE Comic c SET c.estadoEnum = :estado WHERE c.id = :idComic";
 		Query queryActualizarComic = em.createQuery(actualizarNombreComic);
-		queryActualizarComic.setParameter("estado", estado);	
+		queryActualizarComic.setParameter("estado", estado);
 		queryActualizarComic.setParameter("idComic", idComic);
 		queryActualizarComic.executeUpdate();
-		
+
 		ComicDTO comicDTOResultado = new ComicDTO();
 		try {
 			comicDTOResultado = convertirComicToComicDTO(consultarComic(idComic));
@@ -162,13 +189,36 @@ public class GestionarComicBean implements IGestionarComicLocal {
 		}
 		return comicDTOResultado;
 	}
-	
-	
+
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+	@Override
+	public ComicDTO actualizarComic(ComicDTO comicDTO) {
+		ComicDTO comicDTOResultado = new ComicDTO();
+		try {	
+			//condicional  que valida que
+			if(consultarComic(comicDTO.getId()) != null){
+				em.merge(convertirComicDTOToComic(comicDTO));
+				comicDTOResultado = comicDTO;
+			}
+			comicDTOResultado.setExitoso(true);
+			comicDTOResultado.setMensajeEjecucion("Se actualizo con exito el comic.");
+		} catch (NoResultException e) {
+			comicDTOResultado.setExitoso(false);
+			comicDTOResultado.setMensajeEjecucion("No existe comic con ese id.");
+		} catch (Exception e) {
+			comicDTOResultado.setExitoso(false);
+			comicDTOResultado.setMensajeEjecucion("Se ha presentado un error tecnico al consultar el comic" + e.getMessage());
+		}
+		return comicDTOResultado;
+	}
 
 	/**
-	 * @see com.hbt.semillero.ejb.IGestionarComicLocal#eliminarComic(java.lang.Long)
+	 * Metodo encargado de eliminar un comic con el idComic y retorna el comic
+	 * 
+	 * @author Pedro Javier Arias
+	 * @param comic
+	 * @return
 	 */
-
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	@Override
 	public ComicDTO eliminarComic(Long idComic) {
@@ -190,12 +240,15 @@ public class GestionarComicBean implements IGestionarComicLocal {
 			comicDTOResultado.setExitoso(false);
 			comicDTOResultado.setMensajeEjecucion("Se ha presentado un error tecnico al consultar el comic");
 		}
-
 		return comicDTOResultado;
 	}
 
 	/**
-	 * @see com.hbt.semillero.ejb.IGestionarComicLocal#ConsultarComics(java.lang.Long)
+	 * Metodo encargado de devolver todos los comics
+	 * 
+	 * @author Pedro Javier Arias
+	 * @param comic
+	 * @return
 	 */
 	@SuppressWarnings("unchecked")
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
@@ -203,28 +256,42 @@ public class GestionarComicBean implements IGestionarComicLocal {
 	public List<ComicDTO> consultarComics() {
 		String findAllComic = " SELECT cm FROM Comic cm ";
 		Query queryFindAllComic = em.createQuery(findAllComic);
-		List<ComicDTO> listaComics =  queryFindAllComic.getResultList();
+		List<ComicDTO> listaComics = queryFindAllComic.getResultList();
+	
 		return listaComics;
+	}
+
+	/**
+	 * Metodo encargado de devolver un comic con el id El método eliminarComic lo
+	 * utiliza para devolverlo antes eliminarlo
+	 * 
+	 * @author Pedro Javier Arias
+	 * @param comic
+	 * @return
+	 * @throws Exception
+	 */
+	private Comic consultarComic(Long idComic) throws Exception {
+		Comic comic = null;
+		try {
+			String findComic = " SELECT cm FROM Comic cm WHERE cm.id = :idComic";
+			Query queryFindComic = em.createQuery(findComic);
+			queryFindComic.setParameter("idComic", idComic);
+			comic = (Comic) queryFindComic.getSingleResult();
+		} catch (NoResultException e) {
+			throw new NoResultException();// Excepción para id inexistente.
+		} catch (Exception e) {
+			throw new Exception();
+		}
+		return comic;
 	}
 
 	/**
 	 * Metodo encargado de convertir un comicDTO a comic
 	 * 
 	 * @author Pedro Javier Arias
-	 * 
 	 * @param comic
 	 * @return
 	 */
-
-	private Comic consultarComic(Long idComic) throws Exception {
-		Comic comic = null;
-		String findComic = " SELECT cm FROM Comic cm WHERE cm.id = :idComic";
-		Query queryFindComic = em.createQuery(findComic);
-		queryFindComic.setParameter("idComic", idComic);
-		comic = (Comic) queryFindComic.getSingleResult();
-		return comic;
-	}
-
 	private Comic convertirComicDTOToComic(ComicDTO comicDTO) {
 		Comic comic = new Comic();
 		comic.setId(comicDTO.getId());
@@ -246,7 +313,6 @@ public class GestionarComicBean implements IGestionarComicLocal {
 	 * Metodo encargado de convertir un comic a comicDTO
 	 * 
 	 * @author Pedro Javier Arias
-	 * 
 	 * @param comic
 	 * @return
 	 */
@@ -267,24 +333,5 @@ public class GestionarComicBean implements IGestionarComicLocal {
 		return comicDTO;
 	}
 
-	/*
-	 * @Test public void crearComicExitoso() { ComicDTO comicDTO = new ComicDTO();
-	 * comicDTO.setNombre("Guardianes de la galaxia");
-	 * comicDTO.setEditorial("Marvel");
-	 * comicDTO.setTematicaEnum(TematicaEnum.CIENCIA_FICCION);
-	 * comicDTO.setColeccion("Marvel"); comicDTO.setNumeroPaginas(120);
-	 * comicDTO.setPrecio(new BigDecimal(800)); comicDTO.setAutores("Marvel");
-	 * comicDTO.setColor(true); comicDTO.setEstadoEnum(EstadoEnum.ACTIVO);
-	 * comicDTO.setCantidad(2L);
-	 * 
-	 * try { ComicDTO comicDTOResult = crearComic(comicDTO); Comic comicEntity =
-	 * em.find(Comic.class, comicDTOResult.getId());
-	 * Assert.assertEquals(comicEntity.getNombre(), comicDTO.getNombre());
-	 * Assert.assertEquals(comicEntity.getTematicaEnum(),
-	 * comicDTO.getTematicaEnum()); Assert.assertTrue(comicEntity.getColor()); }
-	 * catch (Exception e) { Assert.fail(); }
-	 * 
-	 * }
-	 */
 
 }

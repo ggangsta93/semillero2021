@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 public class ConsultaNombrePrecioComicDTO extends ResultadoDTO {
 
 	/**
-	 * 
+	 * Atributo que determina  
 	 */
 	private static final long serialVersionUID = 1L;
 	private String nombre;

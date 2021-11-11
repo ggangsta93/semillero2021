@@ -8,50 +8,48 @@ public class ConsultaComicTamanioNombreDTO extends ResultadoDTO {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private ArrayList<String> si=new ArrayList<String>();
-	private ArrayList<String> no=new ArrayList<String>();
+	private ArrayList<String> comicsSuperanTamanio=new ArrayList<String>();
+	private ArrayList<String> comicsNoSuperanTamanio=new ArrayList<String>();
 	
 	/**
 	 * Constructor de la clase.
-	 * @param si
-	 * @param no
+	 * @param comicsSuperanTamanio
+	 * @param comicsNoSuperanTamanio
 	 */
 	public ConsultaComicTamanioNombreDTO() {
 		super();
 	}
-	
+
 	/**
-	 * Metodo encargado de retornar el valor del atributo si
-	 * @return El si asociado a la clase
+	 * Metodo encargado de retornar el valor del atributo comicsSuperanTamanio
+	 * @return El comicsSuperanTamanio asociado a la clase
 	 */
-	public ArrayList<String> getSi() {
-		return si;
+	public ArrayList<String> getComicsSuperanTamanio() {
+		return comicsSuperanTamanio;
 	}
 
 	/**
-	 * Metodo encargado de modificar el valor del atributo si
-	 * @param si El nuevo si a modificar.
+	 * Metodo encargado de modificar el valor del atributo comicsSuperanTamanio
+	 * @param comicsSuperanTamanio El nuevo comicsSuperanTamanio a modificar.
 	 */
-	public void setSi(ArrayList<String> si) {
-		this.si = si;
+	public void setComicsSuperanTamanio(ArrayList<String> comicsSuperanTamanio) {
+		this.comicsSuperanTamanio = comicsSuperanTamanio;
 	}
 
 	/**
-	 * Metodo encargado de retornar el valor del atributo no
-	 * @return El no asociado a la clase
+	 * Metodo encargado de retornar el valor del atributo comicsNoSuperanTamanio
+	 * @return El comicsNoSuperanTamanio asociado a la clase
 	 */
-	public ArrayList<String> getNo() {
-		return no;
+	public ArrayList<String> getComicsNoSuperanTamanio() {
+		return comicsNoSuperanTamanio;
 	}
 
 	/**
-	 * Metodo encargado de modificar el valor del atributo no
-	 * @param no El nuevo no a modificar.
+	 * Metodo encargado de modificar el valor del atributo comicsNoSuperanTamanio
+	 * @param comicsNoSuperanTamanio El nuevo comicsNoSuperanTamanio a modificar.
 	 */
-	public void setNo(ArrayList<String> no) {
-		this.no = no;
+	public void setComicsNoSuperanTamanio(ArrayList<String> comicsNoSuperanTamanio) {
+		this.comicsNoSuperanTamanio = comicsNoSuperanTamanio;
 	}	
-	
-	
 
 }

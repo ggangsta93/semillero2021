@@ -16,6 +16,10 @@ import com.hbt.semillero.dto.ComicDTO;
 public class excepcionComicsInactivos extends Exception {
 	
 	/**
+	 * Atributo que determina  
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
 	 * Atributo que determina si es una excepción valida
 	 */
 	private boolean error;

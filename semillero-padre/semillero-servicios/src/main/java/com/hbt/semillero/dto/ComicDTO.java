@@ -99,11 +99,10 @@ public class ComicDTO extends ResultadoDTO implements Serializable {
 	 * @param estadoEnum
 	 * @param cantidad
 	 */
-	public ComicDTO(Long id,String nombre, String editorial, TematicaEnum tematicaEnum, String coleccion,
+	public ComicDTO(String nombre, String editorial, TematicaEnum tematicaEnum, String coleccion,
 			Integer numeroPaginas, BigDecimal precio, String autores, Boolean color, LocalDate fechaVenta,
 			EstadoEnum estadoEnum, Long cantidad) {
 		super();
-		this.id=id;
 		this.nombre = nombre;
 		this.editorial = editorial;
 		this.tematicaEnum = tematicaEnum;
@@ -116,6 +115,8 @@ public class ComicDTO extends ResultadoDTO implements Serializable {
 		this.estadoEnum = estadoEnum;
 		this.cantidad = cantidad;
 	}
+
+
 
 	/**
 	 * Metodo encargado de retornar el valor del atributo id

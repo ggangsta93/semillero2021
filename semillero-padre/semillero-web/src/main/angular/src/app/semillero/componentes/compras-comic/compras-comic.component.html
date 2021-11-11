@@ -1,0 +1,41 @@
+<p>compras-comic works!</p>
+
+<div class="container">
+  <form [formGroup]="gestionarForm">
+    <div class="row">
+      <div class="col-6">
+        <label for="id">ID:</label>
+        <input
+          type="text"
+          class="form-control"
+          id="id"
+          maxlength="50"
+          formControlName="id"
+          [ngClass]="{ 'is-invalid': submitted && f.id.errors }"
+        />
+      </div>
+      <div class="col-6">
+        <label for="cantidad">Cantidad</label>
+        <input
+          type="text"
+          class="form-control"
+          id="cantidad"
+          maxlength="50"
+          formControlName="cantidad"
+          [ngClass]="{ 'is-invalid': submitted && f.cantidad.errors }"
+        />
+      </div>
+    </div>
+  </form>
+
+  <div class="col-6 text-right">
+    <button type="button" class="btn btn-primary" (click)="ComprarComic()">
+      Comprar
+    </button>
+  </div>
+
+  <p>
+    La compra se realizan con exito, si ingresas el idComic y la cantidad a
+    comprar.
+  </p>
+</div>

@@ -1,13 +1,10 @@
 package semillero.pruebasUnitarias;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
-
 import com.hbt.semillero.dto.ComicDTO;
 import com.hbt.semillero.enums.EstadoEnum;
 import com.hbt.semillero.enums.TematicaEnum;
 import com.hbt.semillero.exception.excepcionComicsInactivos;
-
 import junit.framework.Assert;
 
 import java.util.ArrayList; // import the ArrayList class
@@ -57,8 +54,7 @@ public class CreacionComicTest {
 	 * Metodo encargado de crear los comics y almacenarlos en las listas
 	 */
 	@BeforeTest
-	public void cargarComics() {
-		
+	public void cargarComics() {		
 		ComicDTO comic1=new ComicDTO("Dragon Ball Yamcha","Planeta Cómic",TematicaEnum.AVENTURAS,"Manga Shonen",144,new BigDecimal(2100),"Dragon Garow Lee", false,LocalDate.of(2017, 1, 13),EstadoEnum.ACTIVO, 200L);
 		ComicDTO comic2=new ComicDTO("El planera de los simios","Planeta Bonito",TematicaEnum.BELICO,"Manga Shonen",124,new BigDecimal(4100),"Dragon Garow Lee", false,LocalDate.of(2018, 1, 13),EstadoEnum.INACTIVO, 100L);
 		ComicDTO comic3=new ComicDTO("Titanic","Planeta Cómic",TematicaEnum.CIENCIA_FICCION,"Manga Shonen",154,new BigDecimal(6200),"Dragon Garow Lee", false,LocalDate.of(2019, 1, 13),EstadoEnum.ACTIVO, 800L);

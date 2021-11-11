@@ -33,6 +33,13 @@ public class GestionarComicRest {
 	public ConsultaNombrePrecioComicDTO consultarNombrePrecioComic(@QueryParam("idComic") Long idComic) {
 		return this.gestionarComicLocal.consultarNombrePrecioComic(idComic);	
 	}//http://localhost:8085/semillero-servicios/rest/gestionarComic/consultarNombrePrecioComic?idComic=3
+
+	@GET
+	@Path("/consultarComicTamanioNombre")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ConsultaComicTamanioNombreDTO consultarComicTamanioNombreDTO(@QueryParam("lengthComic") Short lengthComic) {
+		return this.gestionarComicLocal.consultarComicTamanioNombre(lengthComic);	
+	}//http://localhost:8085/semillero-servicios/rest/gestionarComic/consultarComicTamanioNombre	
 	
 	@POST
 	@Path("/crearComic")
@@ -57,7 +64,6 @@ public class GestionarComicRest {
 		return this.gestionarComicLocal.eliminarComic(idComic);	
 	}//http://localhost:8085/semillero-servicios/rest/gestionarComic/eliminarComic?idComic=4
 	
-	
 	@GET
 	@Path("/consultarComics")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -65,48 +71,49 @@ public class GestionarComicRest {
 		return this.gestionarComicLocal.consultarComics();	
 	}//http://localhost:8085/semillero-servicios/rest/gestionarComic/consultarComics
 	
-	
+	/**
+	 * Método encargado de actualizar el nombre de un comic existente
+	 * <b>Caso de Uso: </b> semillero HBT
+	 * @author Javier Arias apedro@unicauca.edu.co
+	 * @param idComic y nombre del comic que se actulizará
+	 * @return comicDTO retorna el comic junto con el mensaje 
+	 */
 	@GET
 	@Path("/actualizarNombreComic")
 	@Produces(MediaType.APPLICATION_JSON)
 	public ComicDTO actualizarNombreComic(@QueryParam("idComic") Long idComic, @QueryParam("nombre") String nombre) {
 		return this.gestionarComicLocal.actualizarNombreComic(idComic, nombre);	
 	}//http://localhost:8085/semillero-servicios/rest/gestionarComic/actualizarNombreComic?idComic=25&nombre=GOKU
-	
-
+		
+	/**
+	 * Método encargado de actualizar el estado de un comic existente
+	 * <b>Caso de Uso: </b> semillero HBT
+	 * @author Javier Arias apedro@unicauca.edu.co
+	 * @param idComic y estado del comic que se actulizará
+	 * @return comicDTO retorna el comic junto con el mensaje 
+	 */
 	@GET
-	@Path("/consultarComicTamanioNombre")
+	@Path("/actualizarEstadoComic")
 	@Produces(MediaType.APPLICATION_JSON)
-	public ConsultaComicTamanioNombreDTO consultarComicTamanioNombreDTO(@QueryParam("lengthComic") Short lengthComic) {
-		return this.gestionarComicLocal.consultarComicTamanioNombre(lengthComic);	
-	}//http://localhost:8085/semillero-servicios/rest/gestionarComic/consultarComicTamanioNombre	
+	public ComicDTO actualizarEstadoComic(@QueryParam("idComic") Long idComic, @QueryParam("estado") EstadoEnum estado) {
+		return this.gestionarComicLocal.actualizarEstadoComic(idComic, estado);	
+	}//http://localhost:8085/semillero-servicios/rest/gestionarComic/actualizarEstadoComic?idComic=27&estado=INACTIVO
 	
 	
-	
-	
-	
-	/*
-	@GET
-	@Path("/actualizarEstadoComics")
+	/**
+	 * Método encargado de actualizar un comic existente
+	 * <b>Caso de Uso: </b> semillero HBT
+	 * @author Javier Arias apedro@unicauca.edu.co
+	 * @param comicDTO DTO con la infomación del comic que se actualizará
+	 * @return comicDTO retorna el comic junto con el mensaje 
+	 */
+	@POST
+	@Path("/actualizarComic")
 	@Produces(MediaType.APPLICATION_JSON)
-	public ComicDTO actualizarEstadoComics(@QueryParam("idComic") Long idComic, @QueryParam("estado") EstadoEnum estado) {
-		return this.gestionarComicLocal.actualizarEstadoComics(idComic, estado);	
-	}//http://localhost:8085/semillero-servicios/rest/gestionarComic/actualizarEstadoComics?idComic=27&estado=INACTIVO
-	*/
-	
-	/*	
-	{
-	    "nombre": "Hulk",
-	    "editorial": "Marvel",
-	    "tematicaEnum": "AVENTURAS",
-	    "coleccion": "Marvel Comics",
-	    "numeroPaginas": 100,
-	    "precio": 200,
-	    "autores": "Marvel",
-	    "color": true,
-	    "estadoEnum": "ACTIVO",
-	    "cantidad": 2
-	}
-	*/
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ComicDTO actualizarComic(ComicDTO comicDTO) {
+		return this.gestionarComicLocal.actualizarComic(comicDTO);	
+	}//http://localhost:8085/semillero-servicios/rest/gestionarComic/actualizarComic
+		
 
 }

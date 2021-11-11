@@ -17,11 +17,11 @@ import com.hbt.semillero.enums.EstadoEnum;
 public interface IGestionarComicLocal {
 	/**
 	 * 
-	 * Metodo encargado de 
+	 * Método encargado de 
 	 * <b>Caso de Uso</b>
-	 * @author Personal
+	 * @author Javier Arias apedro@unicauca.edu.co
 	 * 
-	 * @param comicDTO
+	 * @param idComic
 	 * @return
 	 */
 	public ConsultaNombrePrecioComicDTO consultarNombrePrecioComic(Long idComic);
@@ -29,7 +29,10 @@ public interface IGestionarComicLocal {
 	public ComicDTO crearComic(ComicDTO comicDTO) throws Exception;
 	public ComicDTO actualizarNombreComic(Long idComic, String nombre);
 	public ComicDTO actualizarEstadoComic(Long idComic, EstadoEnum estado);
+	public ComicDTO actualizarComic(ComicDTO comicDTO);	
 	public ComicDTO eliminarComic(Long idComic);
 	public List<ComicDTO> consultarComics();
+	
+
 
 }
